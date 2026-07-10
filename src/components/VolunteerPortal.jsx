@@ -49,22 +49,27 @@ export default function VolunteerPortal() {
     }));
   };
 
-  const handleTranslate = useCallback(() => {
-    if (!inputText.trim()) return;
+  const handleTranslatePhrase = useCallback((phrase) => {
+    if (!phrase.trim()) return;
     setIsTranslating(true);
     
     // Simulate translation time
     setTimeout(() => {
-      const result = aiService.getTranslation(inputText, targetLang);
+      const result = aiService.getTranslation(phrase, targetLang);
       setTranslationResult(result);
       setIsTranslating(false);
     }, 400);
-  }, [inputText, targetLang]);
+  }, [targetLang]);
+
+  const handleTranslate = () => {
+    handleTranslatePhrase(inputText);
+  };
 
   // Run initial translation on mount / load
   useEffect(() => {
-    handleTranslate();
-  }, [handleTranslate]);
+    handleTranslatePhrase(inputText);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [targetLang]);
 
   const speakTranslation = () => {
     if (!translationResult) return;
@@ -277,8 +282,9 @@ export default function VolunteerPortal() {
                     className="btn-secondary" 
                     style={{ fontSize: '0.7rem', padding: '0.3rem 0.5rem', justifyContent: 'flex-start', textAlign: 'left', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}
                     onClick={() => {
-                      setInputText('Welcome to MetLife Stadium! Please show your digital ticket.');
-                      setTimeout(handleTranslate, 50);
+                      const phrase = 'Welcome to MetLife Stadium! Please show your digital ticket.';
+                      setInputText(phrase);
+                      handleTranslatePhrase(phrase);
                     }}
                   >
                     👋 "Welcome to MetLife Stadium! Please show..."
@@ -287,8 +293,9 @@ export default function VolunteerPortal() {
                     className="btn-secondary" 
                     style={{ fontSize: '0.7rem', padding: '0.3rem 0.5rem', justifyContent: 'flex-start', textAlign: 'left', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}
                     onClick={() => {
-                      setInputText('The nearest accessible restroom is down the concourse near Section 104.');
-                      setTimeout(handleTranslate, 50);
+                      const phrase = 'The nearest accessible restroom is down the concourse near Section 104.';
+                      setInputText(phrase);
+                      handleTranslatePhrase(phrase);
                     }}
                   >
                     ♿ "The nearest accessible restroom is down..."
@@ -297,8 +304,9 @@ export default function VolunteerPortal() {
                     className="btn-secondary" 
                     style={{ fontSize: '0.7rem', padding: '0.3rem 0.5rem', justifyContent: 'flex-start', textAlign: 'left', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}
                     onClick={() => {
-                      setInputText('In case of emergency, please follow me to the nearest exit stairs.');
-                      setTimeout(handleTranslate, 50);
+                      const phrase = 'In case of emergency, please follow me to the nearest exit stairs.';
+                      setInputText(phrase);
+                      handleTranslatePhrase(phrase);
                     }}
                   >
                     🚨 "In case of emergency, please follow..."
