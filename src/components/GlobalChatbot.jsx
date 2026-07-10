@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { MessageSquare, X, Send, Sparkles, Volume2, Globe, HelpCircle } from 'lucide-react';
+import { useState, useEffect, useRef } from 'react';
+import { MessageSquare, X, Send, Sparkles, Volume2 } from 'lucide-react';
 import { aiService } from '../services/aiService';
 
 export default function GlobalChatbot() {
@@ -40,7 +40,7 @@ export default function GlobalChatbot() {
         text: aiResponse,
         time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
       }]);
-    } catch (e) {
+    } catch {
       setMessages(prev => [...prev, {
         sender: 'ai',
         text: 'I encountered an error querying the GenAI engine. Please try again.',
@@ -54,7 +54,7 @@ export default function GlobalChatbot() {
 
   const speakText = (text) => {
     if ('speechSynthesis' in window) {
-      const cleanText = text.replace(/[*#_\-`🚨]/g, '');
+      const cleanText = text.replace(/[*#_\-`🚨]/gu, '');
       const utterance = new SpeechSynthesisUtterance(cleanText);
       const langCodes = {
         'English': 'en-US',

@@ -1,10 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { UserCheck, Languages, CheckSquare, Sparkles, Volume2, HelpCircle, ShieldAlert, Check } from 'lucide-react';
+import { useState, useEffect, useCallback } from 'react';
+import { UserCheck, Languages, CheckSquare, Sparkles, Volume2, ShieldAlert } from 'lucide-react';
 import { aiService } from '../services/aiService';
 
 export default function VolunteerPortal() {
-  const [simState, setSimState] = useState(aiService.getState());
-  
   // Volunteer Checkin Form
   const [volName, setVolName] = useState('');
   const [volRole, setVolRole] = useState('Language Assistant (ES/EN)');
@@ -27,12 +25,7 @@ export default function VolunteerPortal() {
     { id: 5, text: 'Inspect Sector ticket scanning stanchion line speeds', done: false }
   ]);
 
-  useEffect(() => {
-    const sub = aiService.subscribe((newState) => {
-      setSimState(newState);
-    });
-    return sub;
-  }, []);
+
 
   const handleCheckin = (e) => {
     e.preventDefault();
@@ -56,7 +49,7 @@ export default function VolunteerPortal() {
     }));
   };
 
-  const handleTranslate = () => {
+  const handleTranslate = useCallback(() => {
     if (!inputText.trim()) return;
     setIsTranslating(true);
     
@@ -66,12 +59,12 @@ export default function VolunteerPortal() {
       setTranslationResult(result);
       setIsTranslating(false);
     }, 400);
-  };
+  }, [inputText, targetLang]);
 
   // Run initial translation on mount / load
   useEffect(() => {
     handleTranslate();
-  }, [targetLang]);
+  }, [handleTranslate]);
 
   const speakTranslation = () => {
     if (!translationResult) return;
@@ -127,7 +120,7 @@ export default function VolunteerPortal() {
               <div style={{ textAlign: 'center', padding: '1rem', background: 'rgba(0,0,0,0.2)', border: '1px dashed var(--border-color)', borderRadius: '8px' }}>
                 <span style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', display: 'block', marginBottom: '0.5rem' }}>Your Entry Clearance Pass (QR Code)</span>
                 {/* Simulated QR Code using CSS */}
-                <div style={{ width: '100px', height: '100px', margin: '0 auto', background: '#fff', padding: '5px', display: 'flex', flexWrap: 'wrap', gap: '2px', justifyContent: 'center', alignItems: 'center' }}>
+                <div className="qr-scanner-container">
                   {Array.from({ length: 64 }).map((_, i) => (
                     <div key={i} style={{ width: '9px', height: '9px', background: Math.random() > 0.4 ? '#000' : '#fff' }}></div>
                   ))}

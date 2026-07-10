@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
-import { AlertCircle, Plus, Send, Radio, UserCheck, ShieldAlert, Sparkles, BookOpen } from 'lucide-react';
+import { Plus, Send, Radio, UserCheck, ShieldAlert, Sparkles, BookOpen } from 'lucide-react';
 import { aiService } from '../services/aiService';
 
 // Mock chart data for crowd entry levels over the day
@@ -70,7 +70,7 @@ export default function StaffPortal() {
     try {
       const resp = await aiService.getStaffAIResponse(oracleQuery);
       setOracleResponse(resp);
-    } catch (err) {
+    } catch {
       setOracleResponse('Failed to contact AI Oracle. Please try again.');
     } finally {
       setOracleLoading(false);
@@ -424,7 +424,7 @@ export default function StaffPortal() {
                 __html: oracleResponse
                   .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
                   .replace(/### (.*?)\n/g, '<h4 style="color: var(--accent-blue); margin-bottom: 0.5rem;">$1</h4>')
-                  .replace(/\- (.*?)\n/g, '<li style="margin-left: 10px; margin-bottom: 0.25rem;">$1</li>')
+                  .replace(/- (.*?)\n/g, '<li style="margin-left: 10px; margin-bottom: 0.25rem;">$1</li>')
               }} />
             ) : (
               <span style={{ color: 'var(--text-muted)' }}>Ask operations guidelines. Try asking about *lightning protocol*, *Code Red*, or *spill cleaning SLAs*.</span>

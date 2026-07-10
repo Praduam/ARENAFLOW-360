@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { MessageSquare, Send, Map, MapPin, Compass, Bus, Car, Smile, Info, Sparkles, Globe, Volume2, Shield } from 'lucide-react';
+import { useState, useEffect, useRef } from 'react';
+import { Send, Map, Compass, Bus, Sparkles, Globe, Volume2, Shield } from 'lucide-react';
 import { aiService } from '../services/aiService';
 
 export default function FanPortal() {
@@ -48,7 +48,7 @@ export default function FanPortal() {
         text: aiResponse,
         time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
       }]);
-    } catch (e) {
+    } catch {
       setMessages(prev => [...prev, {
         sender: 'ai',
         text: 'Sorry, I encountered an issue processing that query. Please try again.',
@@ -68,7 +68,7 @@ export default function FanPortal() {
   const speakText = (text) => {
     if ('speechSynthesis' in window) {
       // Strip markdown syntax
-      const cleanText = text.replace(/[*#_\-`🚨]/g, '');
+      const cleanText = text.replace(/[*#_\-`🚨]/gu, '');
       const utterance = new SpeechSynthesisUtterance(cleanText);
       const langCodes = {
         'English': 'en-US',

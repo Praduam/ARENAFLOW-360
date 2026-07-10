@@ -1,17 +1,17 @@
-import React, { useState, useEffect } from 'react';
-import { Settings, X, Key, Check, Info } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { Settings, X, Key, Check } from 'lucide-react';
 import { aiService } from '../services/aiService';
 
 export default function DeveloperSettings() {
   const [isOpen, setIsOpen] = useState(false);
-  const [apiKey, setApiKey] = useState('');
+  const [simState, setSimState] = useState(() => aiService.getState());
+  const [apiKey, setApiKey] = useState(() => aiService.getState().apiKey);
   const [isSaved, setIsSaved] = useState(false);
-  const [simState, setSimState] = useState(aiService.getState());
 
   useEffect(() => {
-    setApiKey(simState.apiKey);
     const sub = aiService.subscribe((newState) => {
       setSimState(newState);
+      setApiKey(newState.apiKey);
     });
     return sub;
   }, []);

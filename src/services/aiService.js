@@ -385,7 +385,7 @@ async function callGeminiAPI(prompt, systemInstruction) {
       try {
         const err = await response.json();
         errMsg = err.error?.message || errMsg;
-      } catch (e) {
+      } catch {
         // Fallback if response is not JSON
       }
       throw new Error(errMsg);
